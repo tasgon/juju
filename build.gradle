@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'me.tasgon'
+version '1.0-SNAPSHOT'
+
+mainClassName = "me.tasgon.juju.Main"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files("${System.getProperty('java.home')}/../lib/tools.jar")
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': "me.tasgon.juju.Main",
+                'Agent-Class': "me.tasgon.juju.Agent"
+        )
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
