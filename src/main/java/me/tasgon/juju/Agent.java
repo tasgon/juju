@@ -8,10 +8,5 @@ import java.lang.instrument.Instrumentation;
 public class Agent {
     public static void agentmain(String agentArgs, Instrumentation inst) {
         System.out.println("Juju " + Agent.class.getPackage().getImplementationVersion() + " loading.");
-
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("nashorn");
-
-
     }
 }
