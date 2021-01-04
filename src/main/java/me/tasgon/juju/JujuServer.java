@@ -11,18 +11,15 @@ public class JujuServer extends UnicastRemoteObject implements JujuServerInterfa
     ScriptEngineManager mgr = new ScriptEngineManager();
     ScriptEngine engine = mgr.getEngineByName("nashorn");
 
-    protected JujuServer(int pid) throws RemoteException {
+    protected JujuServer() throws RemoteException {
         super(0);
-    }
-
-    public void bindClient() {
-
     }
 
     @Override
     public void exec(String msg) {
         try {
-            engine.eval(msg);
+            Object ret = engine.eval(msg);
+
         } catch (ScriptException e) {
 
         }
