@@ -1,7 +1,10 @@
 package me.tasgon.juju;
 
-public interface JujuClientInterface {
-    void print(String msg);
-    void processObject(Object obj);
-    void serverReady();
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface JujuClientInterface extends Remote {
+    void print(String msg) throws RemoteException;
+    //void initLoop() throws RemoteException;
+    void serverReady() throws RemoteException;
 }

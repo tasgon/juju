@@ -3,25 +3,27 @@ package me.tasgon.juju;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class JujuServer extends UnicastRemoteObject implements JujuServerInterface {
+public class JujuServer implements JujuServerInterface {
 
     ScriptEngineManager mgr = new ScriptEngineManager();
     ScriptEngine engine = mgr.getEngineByName("nashorn");
 
-    protected JujuServer() throws RemoteException {
-        super(0);
-    }
-
     @Override
-    public void exec(String msg) {
+    public String exec(String msg) {
         try {
+            System.out.println("Received: " + msg);
             Object ret = engine.eval(msg);
-
-        } catch (ScriptException e) {
-
+            return ret.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+            return out.toString();
         }
     }
 }

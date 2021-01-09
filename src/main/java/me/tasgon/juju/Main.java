@@ -13,6 +13,7 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +25,8 @@ public class Main {
 
     public static ExecutorService executor = Executors.newSingleThreadExecutor();
 
+    public static Registry registry;
+
     public static void main(String[] args) throws IOException, AttachNotSupportedException, URISyntaxException, AgentLoadException, AgentInitializationException, AlreadyBoundException {
         String pid = args[0];
         Main.targetPID = pid;
@@ -31,8 +34,8 @@ public class Main {
 
         VirtualMachine vm = VirtualMachine.attach(pid);
         JujuClient client = new JujuClient();
-        Registry registry = LocateRegistry.getRegistry();
-        registry.bind(String.format("//localhost/juju-%s-client", pid), client);
+        registry = LocateRegistry.createRegistry(17320);
+        registry.rebind(String.format("//localhost/juju-%s-client", pid), (JujuClientInterface) UnicastRemoteObject.exportObject(client, 0));
         System.out.println("Server initialized");
         try {
             vm.loadAgent(Main.getJarFile());
